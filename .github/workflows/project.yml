@@ -1,0 +1,268 @@
+#include <iostream>
+#include <cmath>
+#include <exception>
+#define isEqual ==
+using namespace std;
+
+
+
+class Element {
+public:
+    int x;
+    int y;
+    int z;
+    int a;
+    int b;
+    int c;
+   
+
+    virtual bool checkisequal() = 0;
+};
+
+
+class VectorLengthException :public exception {
+public:
+    virtual const char* zeroLenghtException()const throw() {
+        return "The length of the vector is zero";
+
+    }
+
+}myException;
+
+class Point : public Element {
+public:
+    void setcoordinates() {
+        cout << "Enter coordinates for first point" << endl;
+        cin >> this->x >> this->y >> this->z;
+        cout << "Enter coordinates for second point" << endl;
+        cin >> this->a >> this->b >> this->c;
+
+        checkisequal();
+
+    }
+
+    bool checkisequal() {
+        cout << "Do you want to check if the points are overlapping ?";
+        string shouldcheck;
+        cin >> shouldcheck;
+        if (shouldcheck isEqual "no") {
+            return 0;
+        }
+        if (this->a isEqual this->x && this->b isEqual this->y && this->c isEqual this->z) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+};
+
+class Vector : public Element {
+ protected:
+    int aVector[3];
+    int x;
+    int y;
+    int z;
+public:
+    Vector();
+    Vector(int a, int b, int c = 0) {
+        this->x = a;
+        this->y = b;
+        this->z = c;
+        this->aVector[0] = this->x;
+        this->aVector[1] = this->y;
+        this->aVector[2] = this->z; 
+   }
+    void calculateLenght() {
+
+        cout << sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+
+    }
+    void calculateDirection() {
+        try {
+
+      
+        double firstresult;
+        double secondresult;
+        double thirdresult;
+
+        firstresult = x / (sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2)));
+        secondresult = y / (sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2)));
+        thirdresult = z / (sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2)));
+        double result = firstresult = secondresult = thirdresult;
+        
+        if (result isEqual 0) {
+            throw myException;
+        }
+        cout << result << endl;
+        }
+        catch (exception& e) {
+            cout << myException.zeroLenghtException() << endl;
+    }
+
+    }
+
+    bool checkVectorLength() {
+
+        if (x == 0 && y == 0 && z == 0) {
+
+            return true;
+
+
+        }
+        else {
+            return false;
+        }
+    }
+
+    bool checkIfParallel(int v1, int v2, int v3) {
+
+        if (this->x / v1 isEqual this->y / v2 && this->x / v1 isEqual this->z / v3) {
+
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    bool checkIfPerpendicular(int v1, int v2, int v3) {
+        if ((this->x * v1 + this->y * v2 + this->z * v3) isEqual 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+    void sumVectors(int v1, int v2, int v3) {
+        int newVector = this->aVector[0] + this->aVector[1] + this->aVector[2] + v1 + v2 + v3;
+        cout << newVector << endl;    
+    }
+    void substractVectors(int v1, int v2, int v3) {
+        int vector1 = this->x - v1;
+        int vector2 = this->y - v2;
+        int vector3 = this->z - v3;
+        cout <<vector1<< " "<<vector2<<" "<<vector3<< endl;
+    }
+    void multiplyVectors(double r) {
+       double FirstCoordinate = r * this->aVector[0]; 
+       double SecondCoordinate = r * this->aVector[1];
+       double ThirdCoordinate = r * this->aVector[2];
+        cout << FirstCoordinate << " "<<SecondCoordinate<< " "<< ThirdCoordinate << endl;
+    }
+    void scalarMultiplyVectors(int v1, int v2, int v3) {
+        int v = this->x * v1 + this->y * v2 + this->z * v3;
+        cout << v << endl;
+    }
+    void VectorMultiplication(int v1, int v2, int v3) {
+        int FirstCoordinate = this->y* v3 - this->z * v2;
+        int SecondCoordinate = -this->x + this->z * v1;
+        int ThirdCoordinate = this->x * v2 - this->y * v1;
+    }
+    void MixedMultiplication(int v1, int v2, int v3, int a, int b, int c) {
+        int vectors[9] = { this->x, this->y, this->z,v1, v2, v3, a, b, c };
+        cout << vectors[0] << " " << vectors[1] << " " << vectors[2] << endl;
+        cout << vectors[3] << " " << vectors[4] << " " << vectors[5] << endl;
+        cout << vectors[6] << " " << vectors[7] << " " << vectors[8] << endl;
+
+       
+       
+        
+    }
+};
+
+
+
+
+class Line : public Vector {
+public:
+    Line();
+    Line(int a1, int a2, int a3) {
+
+        this->x = a;
+        this->y = b;
+        this->z = c;
+
+    }
+    void FindDirectionLine() {
+
+    }
+    void FindNormalVector() {
+
+    }
+    void FindAnglesBetweenLines() {
+
+    }
+};
+
+
+class Segment : public Line {
+
+};
+
+
+class Triangle : public Point {
+public:
+Triangle(int x, int y, int z) {
+    this->x = x;
+    this->y = y;
+    this->z = z;
+    }
+void CheckTriangle(){
+    if (pow(this->z, 2) isEqual(pow(this->x, 2) + pow(this->y, 2))) {
+cout << "This is a right triangle" << endl;
+    }
+        
+    else if (pow(this->z, 2) < pow(this->x, 2) + pow(this->y, 2)) {
+        cout << "This is a acute triangle" << endl;
+
+    }
+    else if (pow(this->z, 2) > pow(this->x, 2) + pow(this->y, 2)) {
+        cout << "This is a obtuse triangle" << endl;
+    }
+    if (this->x isEqual this->y) {
+        cout << "This is a isosceles triangle" << endl;
+    }
+    else if (this->x isEqual this->y && this->y isEqual this->z) {
+        cout << "This is a equilateral triangle" << endl;
+    }
+    
+}
+void FindFaceTriangle() {
+    double area = (this->x + this->y + this->z) / 2;
+    double h = (area * 2) / this-> y;
+    double face = (this->x * h) / 2;
+    cout << "The face of the triangle is : " << face << endl;
+}
+void FindPerimeterTriangle() {
+    double perimeter = (this->x + this->y + this->z);
+    cout << "The area of the triangle is: " << perimeter << endl;
+}
+void FindCentroidTriangle() {
+    double centroid = sqrt(2 * pow(this->y, 2) + 2 * pow(this->z, 2) - pow(this->x, 2)) / 6;
+        cout << centroid << endl;
+
+}
+bool ComparePointTriangle() {
+
+    if () {
+
+}
+
+}
+
+
+};
+
+
+
+
+
+
+int main()
+{
+    
+}
